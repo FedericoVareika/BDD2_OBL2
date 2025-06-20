@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  oracle-db:
+    image: gvenzl/oracle-xe  # Replace with the Oracle XE image you want to use
+    container_name: bdd2_obl2
+    ports:
+      - "1521:1521"  # Default Oracle listener port
+      - "5500:5500"  # Default APEX port (if available)
+    environment:
+      ORACLE_PASSWORD: "hola123"  # Replace with your desired password
+      ORACLE_CHARACTERSET: "AL32UTF8"      # Optional: Set character set
+    volumes:
+      - oracle-data:/opt/oracle/oradata  # Persists data on host
+      - ./oracle-data:/opt/oracle/sql_scripts 
+
+volumes:
+  oracle-data:
+    driver: local
+
