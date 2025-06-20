@@ -129,4 +129,39 @@ BEGIN
 END;
 /
 
+---------------------------------------------------------------------
+-- La cantidad de un item equipado en un inventario no puede ser 0 --
+
+CREATE OR REPLACE TRIGGER PERSONAJE_EQUIPA_UNA_CANTIDAD_POSITIVA_DE_ITEMS 
+BEFORE INSERT OR UPDATE
+  ON Inventario_Tiene_Item 
+FOR EACH ROW
+BEGIN 
+  IF :NEW.equipado = 'Y' and :NEW.cantidad < 1 THEN
+    RAISE_APPLICATION_ERROR(
+      -20005,
+      'Equipamiento invalido: No se pueden equipar 0 items'
+    );
+  END IF; 
+END;
+/
+
+------------------------------------------------
+-- Una misión no puede ser previa de si misma --
+
+CREATE OR REPLACE TRIGGER MISION_NO_ES_PREVIA_DE_SI_MISMA 
+BEFORE INSERT OR UPDATE
+  ON Mision_Previa 
+FOR EACH ROW
+BEGIN 
+  IF :NEW.idPrevia = :NEW.idMision THEN
+    RAISE_APPLICATION_ERROR(
+      -20006,
+      'Previa invalida: Una mision no puede ser previa de si misma'
+    );
+  END IF;
+END;
+/
+
+
 

@@ -113,3 +113,39 @@ BEGIN
 END;
 /
 ROLLBACK TO test_init;
+
+---------------------------------------------------------------------
+-- La cantidad de un item equipado en un inventario no puede ser 0 --
+
+BEGIN
+    test_expected_error(
+      'La cantidad de un item equipado en un inventario no puede ser 0',
+      q'[
+        INSERT INTO Inventario_Tiene_Item(idInventario,idItem,cantidad,equipado)
+          VALUES(
+            (SELECT id FROM Inventario WHERE idPersonaje=(SELECT id FROM Personaje WHERE idUsuario=(SELECT id FROM Usuario WHERE nombre='Federica'))),
+            (SELECT id FROM ItemTable WHERE nombre='AmuletoLuna'),0,'Y'
+          )
+      ]',
+      -20005);
+END;
+/
+ROLLBACK TO test_init;
+
+------------------------------------------------
+-- Una misión no puede ser previa de si misma --
+
+BEGIN
+    test_expected_error(
+      'Una misión no puede ser previa de si misma',
+      q'[
+        INSERT INTO Mision_Previa(idMision,idPrevia)
+          VALUES(
+            (SELECT id FROM Mision  WHERE codigo='M001'),
+            (SELECT id FROM Mision  WHERE codigo='M001')
+          )
+      ]',
+      -20006);
+END;
+/
+ROLLBACK TO test_init;
