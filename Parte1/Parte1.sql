@@ -34,27 +34,99 @@ FOR EACH ROW
 DECLARE 
   vlCategoriaNueva ItemTable.categoria%TYPE;
   vlTipoYaEquipado Inventario_Tiene_Item.equipado%TYPE;
-  BEGIN 
-    IF :NEW.equipado = 'Y' THEN
-      SELECT i.categoria INTO vlCategoriaNueva
-      FROM ItemTable i 
-      WHERE i.Id = :NEW.idItem;
+BEGIN 
+  IF :NEW.equipado = 'Y' THEN
+    SELECT i.categoria INTO vlCategoriaNueva
+    FROM ItemTable i 
+    WHERE i.Id = :NEW.idItem;
 
-      SELECT MAX(inv_item.equipado) INTO vlTipoYaEquipado
-      FROM Inventario_Tiene_Item inv_item 
-      LEFT JOIN ItemTable i 
-      ON inv_item.idItem = i.Id 
-      WHERE i.categoria = vlCategoriaNueva 
-      AND inv_item.idInventario = :NEW.idInventario
-      AND inv_item.idItem != :NEW.idItem;
+    SELECT MAX(inv_item.equipado) INTO vlTipoYaEquipado
+    FROM Inventario_Tiene_Item inv_item 
+    LEFT JOIN ItemTable i 
+    ON inv_item.idItem = i.Id 
+    WHERE i.categoria = vlCategoriaNueva 
+    AND inv_item.idInventario = :NEW.idInventario
+    AND inv_item.idItem != :NEW.idItem;
 
-      IF vlTipoYaEquipado = 'Y' THEN
-        RAISE_APPLICATION_ERROR(
-          -20001,
-          'No se puede equipar item de categoria ' 
-          || vlCategoriaNueva 
-          || ' para este personaje ya que ya hay un item de la misma categoria equipado');
-      END IF; 
+    IF vlTipoYaEquipado = 'Y' THEN
+      RAISE_APPLICATION_ERROR(
+        -20002,
+        'No se puede equipar item de categoria ' 
+        || vlCategoriaNueva 
+        || ' para este personaje ya que ya hay un item de la misma categoria equipado');
+    END IF; 
   END IF;
 END;
 /
+
+----------------------------------------------------------------------------------------
+-- Un personaje no puede equipar un ítem cuyo nivelMinimo sea mayor a su nivel actual --
+
+CREATE OR REPLACE TRIGGER PERSONAJE_EQUIPA_ITEMS_CON_NIVEL_ADECUADO 
+BEFORE INSERT OR UPDATE
+  ON Inventario_Tiene_Item 
+FOR EACH ROW
+DECLARE 
+  vlNivelPersonaje Personaje.nivel%TYPE;
+  vlNivelMinimoItem ItemTable.nivelMinimo%TYPE;
+BEGIN 
+  IF :NEW.equipado = 'Y' THEN
+    SELECT p.nivel INTO vlNivelPersonaje
+    FROM Inventario i 
+    LEFT JOIN Personaje p 
+      ON p.id = i.idPersonaje
+    WHERE i.Id = :NEW.idInventario;
+
+    SELECT i.nivelMinimo INTO vlNivelMinimoItem 
+    FROM ItemTable i 
+    WHERE i.id = :NEW.idItem;
+
+    IF vlNivelMinimoItem > vlNivelPersonaje THEN
+      RAISE_APPLICATION_ERROR(
+        -20003,
+        'Equipamiento invalido: No se puede equipar un item de nivel minimo ('
+        ||  vlNivelMinimoItem
+        || ') mayor al del personaje ('
+        ||  vlNivelPersonaje
+        || ')'
+      );
+    END IF; 
+  END IF; 
+END;
+/
+
+-----------------------------------------------------------------------------------------
+-- Un usuario no puede progresar una misión cuyo nivelMinimo sea mayor al del usuario. --
+
+CREATE OR REPLACE TRIGGER PERSONAJE_PROGRESA_MISION_CON_NIVEL_ADECUADO
+BEFORE INSERT OR UPDATE
+  ON Usuario_Progresa_Mision 
+FOR EACH ROW
+DECLARE 
+  vlNivelPersonaje Personaje.nivel%TYPE;
+  vlNivelMinimoMision Mision.nivelMinimo%TYPE;
+BEGIN 
+  IF :NEW.estado != 'No iniciada' THEN
+    SELECT p.nivel INTO vlNivelPersonaje
+    FROM Personaje p 
+    WHERE p.Id = :NEW.idPersonaje;
+
+    SELECT m.nivelMinimo INTO vlNivelMinimoMision
+    FROM Mision m 
+    WHERE m.Id = :NEW.idMision;
+
+    IF vlNivelMinimoMision > vlNivelPersonaje THEN
+      RAISE_APPLICATION_ERROR(
+        -20004,
+        'Estado de mision invalida: No se puede progresar una mision de nivel minimo ('
+        ||  vlNivelMinimoMision
+        || ') mayor al del personaje ('
+        ||  vlNivelPersonaje
+        || ')'
+      );
+    END IF; 
+  END IF; 
+END;
+/
+
+

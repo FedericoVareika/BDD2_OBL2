@@ -40,7 +40,7 @@ INSERT INTO Personaje(idUsuario, especie, fuerza, agilidad, inteligencia, vitali
 
 
 INSERT INTO Personaje(idUsuario, especie, fuerza, agilidad, inteligencia, vitalidad, resistencia, nivel, experiencia, cantHoras, monedas)
-  VALUES((SELECT id FROM Usuario WHERE nombre='Federica'),'Demonio',70,50,40,30,60,25,3000,12,250);
+  VALUES((SELECT id FROM Usuario WHERE nombre='Federica'),'Demonio',70,50,40,30,60,50,3000,12,250);
 
 
 -- 3. Insert Habilidades
@@ -66,7 +66,7 @@ INSERT INTO Mision(codigo, nombre, descripcion, nivelMinimo, experiencia, moneda
 
 
 INSERT INTO Mision(codigo, nombre, descripcion, nivelMinimo, experiencia, monedas)
-  VALUES('M003','Misión 3','Jefe final chavales',3,300,30);
+  VALUES('M003','Misión 3','Jefe final chavales',25,300,30);
 
 
 -- 5. Insert Zonas
@@ -114,6 +114,8 @@ INSERT INTO Inventario(idPersonaje)
 INSERT INTO Inventario(idPersonaje)
   VALUES((SELECT id FROM Personaje WHERE idUsuario=(SELECT id FROM Usuario WHERE nombre='Juan')));
 
+INSERT INTO Inventario(idPersonaje)
+  VALUES((SELECT id FROM Personaje WHERE idUsuario=(SELECT id FROM Usuario WHERE nombre='Federica')));
 
 -- 10. Insert Items
 INSERT INTO ItemTable(categoria,nombre,rareza,nivelMinimo,caracteristicasQueAfecta,intercambiable)
