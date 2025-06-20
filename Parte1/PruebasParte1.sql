@@ -149,3 +149,21 @@ BEGIN
 END;
 /
 ROLLBACK TO test_init;
+
+--------------------------------------------
+-- Un usuario debe tener un correo válido --
+
+BEGIN
+  INSERT INTO Usuario(correo, nombre, contrasena, fechaRegistro, pais, continente)
+    VALUES('jose@gmail.com','Jose','Contra123!',TO_DATE('2025-05-21','YYYY-MM-DD'),'España','Europa');
+
+  test_expected_error(
+    'Un usuario debe tener un correo válido',
+    q'[
+      INSERT INTO Usuario(correo, nombre, contrasena, fechaRegistro, pais, continente)
+        VALUES('juan.com','Juan','Contra123!',TO_DATE('2025-05-21','YYYY-MM-DD'),'España','Europa')
+    ]',
+    -20007);
+END;
+/
+ROLLBACK TO test_init;

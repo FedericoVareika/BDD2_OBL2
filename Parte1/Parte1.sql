@@ -163,5 +163,22 @@ BEGIN
 END;
 /
 
+--------------------------------------------
+-- Un usuario debe tener un correo válido --
 
-
+CREATE OR REPLACE TRIGGER CORREO_DE_USUARIO_VALIDO 
+BEFORE INSERT OR UPDATE
+  ON Usuario 
+FOR EACH ROW
+BEGIN 
+  IF NOT REGEXP_LIKE(
+    :NEW.correo,
+    '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$')
+  THEN
+    RAISE_APPLICATION_ERROR(
+      -20007,
+      'Usuario invalido: correo invalido.'
+    );
+  END IF;
+END;
+/
