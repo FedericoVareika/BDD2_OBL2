@@ -52,7 +52,7 @@ db.Usuario.insertMany([
       totalEnemigosDerrotados:  NumberInt(150),
       totalMisionesCompletadas: NumberInt(5),
       totalHorasJugadas:        12.5,
-      progresoGeneral:          50.0
+      progresoGeneral:          Double(50.0)
     },
     logros: [
       { idLogro: ObjectId("650000000000000000000001"), fechaObtenido: ISODate("2025-06-01T10:00:00Z") },
@@ -72,8 +72,8 @@ db.Usuario.insertMany([
       totalLogros:              NumberInt(2),
       totalEnemigosDerrotados:  NumberInt(80),
       totalMisionesCompletadas: NumberInt(3),
-      totalHorasJugadas:        8.0,
-      progresoGeneral:          60.0
+      totalHorasJugadas:        Double(8.0),
+      progresoGeneral:          Double(60.0)
     },
     logros: [
       { idLogro: ObjectId("650000000000000000000001"), fechaObtenido: ISODate("2025-06-10T13:00:00Z") },
@@ -93,7 +93,7 @@ db.Usuario.insertMany([
       totalEnemigosDerrotados:  NumberInt(200),
       totalMisionesCompletadas: NumberInt(7),
       totalHorasJugadas:        9.5,
-      progresoGeneral:          55.0
+      progresoGeneral:          Double(55.0)
     },
     logros: [
       { idLogro: ObjectId("650000000000000000000001"), fechaObtenido: ISODate("2025-06-05T08:00:00Z") },
@@ -113,8 +113,8 @@ db.Usuario.insertMany([
       totalLogros:              NumberInt(1),
       totalEnemigosDerrotados:  NumberInt(50),
       totalMisionesCompletadas: NumberInt(2),
-      totalHorasJugadas:        3.0,
-      progresoGeneral:          30.0
+      totalHorasJugadas:        Double(3.0),
+      progresoGeneral:          Double(30.0)
     },
     logros: [
       { idLogro: ObjectId("650000000000000000000003"), fechaObtenido: ISODate("2025-06-12T15:00:00Z") }
@@ -132,8 +132,8 @@ db.Usuario.insertMany([
       totalLogros:              NumberInt(2),
       totalEnemigosDerrotados:  NumberInt(65),
       totalMisionesCompletadas: NumberInt(4),
-      totalHorasJugadas:       10.0,
-      progresoGeneral:          60.0
+      totalHorasJugadas:        Double(10.0),
+      progresoGeneral:          Double(60.0)
     },
     logros: [
       { idLogro: ObjectId("650000000000000000000002"), fechaObtenido: ISODate("2025-06-08T12:00:00Z") },
