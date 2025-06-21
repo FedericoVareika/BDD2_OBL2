@@ -46,7 +46,7 @@ db.Usuario.insertMany([
     contrasena:    "Secreto01",
     fechaRegistro: ISODate("2025-06-01T08:00:00Z"),
     pais:          "Uruguay",
-    continente:    "America",
+    continente:    "América",
     estadisticas: {
       totalLogros:              NumberInt(3),
       totalEnemigosDerrotados:  NumberInt(150),
@@ -67,7 +67,7 @@ db.Usuario.insertMany([
     contrasena:    "BrunoPass9",
     fechaRegistro: ISODate("2025-06-10T09:00:00Z"),
     pais:          "Chile",
-    continente:    "America",
+    continente:    "América",
     estadisticas: {
       totalLogros:              NumberInt(2),
       totalEnemigosDerrotados:  NumberInt(80),
@@ -108,7 +108,7 @@ db.Usuario.insertMany([
     contrasena:    "DiegoPass2",
     fechaRegistro: ISODate("2025-06-12T14:00:00Z"),
     pais:          "Mexico",
-    continente:    "America",
+    continente:    "América",
     estadisticas: {
       totalLogros:              NumberInt(1),
       totalEnemigosDerrotados:  NumberInt(50),
@@ -127,7 +127,7 @@ db.Usuario.insertMany([
     contrasena:    "ElenaPass3",
     fechaRegistro: ISODate("2025-06-08T10:00:00Z"),
     pais:          "Peru",
-    continente:    "America",
+    continente:    "América",
     estadisticas: {
       totalLogros:              NumberInt(2),
       totalEnemigosDerrotados:  NumberInt(65),
