@@ -36,7 +36,6 @@ db.Usuario.aggregate([
   {
     $project: {
       _id:           0,
-      idLogro:       "$_id",
       nombre:        "$infoLogro.nombre",
       vecesObtenido: 1
     }

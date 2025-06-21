@@ -12,12 +12,12 @@ db.Usuario.aggregate([
   { $limit: 5 },
   {
     $project: {
-      _id:                  0,
-      usuarioId:            "$_id",
-      nombre:               1,
-      correo:               1,
-      enemigosDerrotados:   "$estadisticas.totalEnemigosDerrotados",
-      porcentajeProgreso:   "$estadisticas.progresoGeneral"
+      _id:                0,
+      nombre:             1,
+      correo:             1,
+      enemigosDerrotados: "$estadisticas.totalEnemigosDerrotados",
+      porcentajeProgreso: "$estadisticas.progresoGeneral"
     }
   }
 ]);
+

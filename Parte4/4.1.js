@@ -13,9 +13,8 @@ db.Usuario.aggregate([
   {
     $group: {
       _id: {
-        usuarioId: "$_id",
-        nombre:    "$nombre",
-        correo:    "$correo"
+        nombre: "$nombre",
+        correo: "$correo"
       },
       totalExploracion: { $sum: 1 }
     }
@@ -23,7 +22,6 @@ db.Usuario.aggregate([
   {
     $project: {
       _id:               0,
-      usuarioId:         "$_id.usuarioId",
       nombre:            "$_id.nombre",
       correo:            "$_id.correo",
       totalExploracion:  1
