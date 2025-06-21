@@ -37,7 +37,6 @@ db.Logros.insertMany([
 ]);
 
 
-// la de usuario no anda
 db.Usuario.insertMany([
   {
     _id: ObjectId("660000000000000000000011"),
