@@ -15,7 +15,6 @@ db.createCollection("Logros", {
   validationAction: "error"
 });
 
-
 db.createCollection("Usuario", {
   validator: {
     $jsonSchema: {
@@ -31,31 +30,33 @@ db.createCollection("Usuario", {
         contrasena:    { bsonType: "string", minLength: 6, maxLength: 16 },
         fechaRegistro: { bsonType: "date" },
         pais:          { bsonType: "string" },
-        continente:    { enum: ["Africa","America","Asia","Europa","Oceania"] },
+        continente:    {
+          enum: ["África","América","Asia","Europa","Oceanía"]
+        },
         estadisticas: {
           bsonType: "object",
           required: [
-            "totalAchievements",
-            "totalEnemiesDefeated",
-            "totalMissionsCompleted",
-            "totalHoursPlayed",
-            "overallProgress"
+            "totalLogros",
+            "totalEnemigosDerrotados",
+            "totalMisionesCompletadas",
+            "totalHorasJugadas",
+            "progresoGeneral"
           ],
           properties: {
-            totalAchievements:     { bsonType: "int",    minimum: 0 },
-            totalEnemiesDefeated:  { bsonType: "int",    minimum: 0 },
-            totalMissionsCompleted:{ bsonType: "int",    minimum: 0 },
-            totalHoursPlayed:      { bsonType: "double", minimum: 0 },
-            overallProgress:       { bsonType: "double", minimum: 0, maximum: 100 }
+            totalLogros:              { bsonType: "int",    minimum: 0 },
+            totalEnemigosDerrotados:  { bsonType: "int",    minimum: 0 },
+            totalMisionesCompletadas: { bsonType: "int",    minimum: 0 },
+            totalHorasJugadas:        { bsonType: "double", minimum: 0 },
+            progresoGeneral:          { bsonType: "double", minimum: 0, maximum: 100 }
           }
         },
         logros: {
           bsonType: "array",
           items: {
             bsonType: "object",
-            required: ["logroId","fechaObtenido"],
+            required: ["idLogro","fechaObtenido"],
             properties: {
-              logroId:      { bsonType: "objectId" },
+              idLogro:      { bsonType: "objectId" },
               fechaObtenido:{ bsonType: "date" }
             }
           }

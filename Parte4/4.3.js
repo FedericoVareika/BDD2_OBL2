@@ -1,10 +1,7 @@
 db.Usuario.aggregate([
-
-  // 1) Desenrolla cada logro
   { $unwind: "$logros" },
-
-  // 2) Filtra solo los obtenidos en las primeras 10 horas
-  { $match: {
+  { 
+    $match: {
       $expr: {
         $lte: [
           {
@@ -19,20 +16,14 @@ db.Usuario.aggregate([
       }
     }
   },
-
-  // 3) Cuenta cuántas veces aparece cada logro
   {
     $group: {
-      _id:   "$logros.logroId",
-      count: { $sum: 1 }
+      _id:           "$logros.idLogro",
+      vecesObtenido: { $sum: 1 }
     }
   },
-
-  // 4) Ordena de mayor a menor y limita a 5
-  { $sort: { count: -1 } },
+  { $sort: { vecesObtenido: -1 } },
   { $limit: 5 },
-
-  // 5) Une con la colección de Logros para obtener el nombre
   {
     $lookup: {
       from:         "Logros",
@@ -42,15 +33,12 @@ db.Usuario.aggregate([
     }
   },
   { $unwind: "$infoLogro" },
-
-  // 6) Proyecta el resultado final
   {
     $project: {
       _id:           0,
-      logroId:       "$_id",
+      idLogro:       "$_id",
       nombre:        "$infoLogro.nombre",
-      vecesObtenido: "$count"
+      vecesObtenido: 1
     }
   }
-
 ]);
