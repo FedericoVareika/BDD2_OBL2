@@ -180,10 +180,12 @@ CREATE TABLE Jefe (
 
 
 CREATE TABLE Usuario_Progresa_Mision (
-  idPersonaje NUMBER NOT NULL,
-  idMision NUMBER NOT NULL,
-  estado      VARCHAR2(20)   NOT NULL
-                CHECK (estado IN ('No iniciada', 'En progreso', 'Completada')),
+  idPersonaje         NUMBER       NOT NULL,
+  idMision            NUMBER       NOT NULL,
+  estado              VARCHAR2(20) NOT NULL
+                        CHECK (estado IN ('No iniciada', 'En progreso', 'Completada')),
+  recompensa_asignada CHAR(1) DEFAULT ('N') NOT NULL
+                        CHECK (recompensa_asignada IN ('Y','N')) ,
   PRIMARY KEY (idPersonaje, idMision),
   FOREIGN KEY (idPersonaje) REFERENCES Personaje(id),
   FOREIGN KEY (idMision) REFERENCES Mision(id)

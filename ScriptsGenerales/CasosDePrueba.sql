@@ -110,12 +110,14 @@ INSERT INTO Jefe(id, idMision)
 INSERT INTO Inventario(idPersonaje)
   VALUES((SELECT id FROM Personaje WHERE idUsuario=(SELECT id FROM Usuario WHERE nombre='Pedro')));
 
-
 INSERT INTO Inventario(idPersonaje)
   VALUES((SELECT id FROM Personaje WHERE idUsuario=(SELECT id FROM Usuario WHERE nombre='Juan')));
 
 INSERT INTO Inventario(idPersonaje)
   VALUES((SELECT id FROM Personaje WHERE idUsuario=(SELECT id FROM Usuario WHERE nombre='Federica')));
+
+INSERT INTO Inventario(idPersonaje)
+  VALUES((SELECT id FROM Personaje WHERE idUsuario=(SELECT id FROM Usuario WHERE nombre='Daniel')));
 
 -- 10. Insert Items
 INSERT INTO ItemTable(categoria,nombre,rareza,nivelMinimo,caracteristicasQueAfecta,intercambiable)
