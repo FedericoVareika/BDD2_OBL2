@@ -42,14 +42,16 @@ db.createCollection("Personaje", {
               "descripcion",
               "recompensaXP",
               "tipo",
-              "fechaObtenido"
+              "fechaObtenido",
+              "horasJugadas"
             ],
             properties: {
               nombre:       { bsonType: "string" },
               descripcion:  { bsonType: "string" },
               recompensaXP: { bsonType: "int",    minimum: 0 },
               tipo:         { bsonType: "string" },
-              fechaObtenido:{ bsonType: "date" }
+              fechaObtenido:{ bsonType: "date" },
+              horasJugadas: { bsonType: "double", minimum: 0 }
             }
           }
         }

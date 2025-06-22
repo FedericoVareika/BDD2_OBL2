@@ -16,25 +16,28 @@ db.Personaje.insertMany([
     },
     logros: [
       {
-        nombre:       "Explorador Novato",
-        descripcion:  "Visita tu primera ubicacion oculta",
-        recompensaXP: NumberInt(200),
-        tipo:         "exploracion",
-        fechaObtenido: ISODate("2025-06-01T10:00:00Z")
+        nombre:        "Explorador Novato",
+        descripcion:   "Visita tu primera ubicacion oculta",
+        recompensaXP:  NumberInt(200),
+        tipo:          "exploracion",
+        fechaObtenido: ISODate("2025-06-01T10:00:00Z"),
+        horasJugadas:  Double(2.0)
       },
       {
-        nombre:       "Viajero del Oeste",
-        descripcion:  "Explora la region Oeste completamente",
-        recompensaXP: NumberInt(300),
-        tipo:         "exploracion",
-        fechaObtenido: ISODate("2025-06-01T12:00:00Z")
+        nombre:        "Viajero del Oeste",
+        descripcion:   "Explora la region Oeste completamente",
+        recompensaXP:  NumberInt(300),
+        tipo:          "exploracion",
+        fechaObtenido: ISODate("2025-06-01T12:00:00Z"),
+        horasJugadas:  Double(4.0)
       },
       {
-        nombre:       "Conquistador de Mazmorras",
-        descripcion:  "Completa tu primera mazmorra",
-        recompensaXP: NumberInt(500),
-        tipo:         "combate",
-        fechaObtenido: ISODate("2025-06-02T08:00:00Z")
+        nombre:        "Conquistador de Mazmorras",
+        descripcion:   "Completa tu primera mazmorra",
+        recompensaXP:  NumberInt(500),
+        tipo:          "combate",
+        fechaObtenido: ISODate("2025-06-02T08:00:00Z"),
+        horasJugadas:  Double(24.0)
       }
     ]
   },
@@ -55,18 +58,20 @@ db.Personaje.insertMany([
     },
     logros: [
       {
-        nombre:       "Explorador Novato",
-        descripcion:  "Visita tu primera ubicacion oculta",
-        recompensaXP: NumberInt(200),
-        tipo:         "exploracion",
-        fechaObtenido: ISODate("2025-06-10T11:00:00Z")
+        nombre:        "Explorador Novato",
+        descripcion:   "Visita tu primera ubicacion oculta",
+        recompensaXP:  NumberInt(200),
+        tipo:          "exploracion",
+        fechaObtenido: ISODate("2025-06-10T11:00:00Z"),
+        horasJugadas:  Double(2.0)
       },
       {
-        nombre:       "Maestro Mago",
-        descripcion:  "Aprende 10 hechizos diferentes",
-        recompensaXP: NumberInt(800),
-        tipo:         "magia",
-        fechaObtenido: ISODate("2025-06-10T18:00:00Z")
+        nombre:        "Maestro Mago",
+        descripcion:   "Aprende 10 hechizos diferentes",
+        recompensaXP:  NumberInt(800),
+        tipo:          "magia",
+        fechaObtenido: ISODate("2025-06-10T18:00:00Z"),
+        horasJugadas:  Double(9.0)
       }
     ]
   },
@@ -87,25 +92,28 @@ db.Personaje.insertMany([
     },
     logros: [
       {
-        nombre:       "Explorador Novato",
-        descripcion:  "Visita tu primera ubicacion oculta",
-        recompensaXP: NumberInt(200),
-        tipo:         "exploracion",
-        fechaObtenido: ISODate("2025-06-05T08:00:00Z")
+        nombre:        "Explorador Novato",
+        descripcion:   "Visita tu primera ubicacion oculta",
+        recompensaXP:  NumberInt(200),
+        tipo:          "exploracion",
+        fechaObtenido: ISODate("2025-06-05T08:00:00Z"),
+        horasJugadas:  Double(1.0)
       },
       {
-        nombre:       "Viajero del Oeste",
-        descripcion:  "Explora la region Oeste completamente",
-        recompensaXP: NumberInt(300),
-        tipo:         "exploracion",
-        fechaObtenido: ISODate("2025-06-05T12:00:00Z")
+        nombre:        "Viajero del Oeste",
+        descripcion:   "Explora la region Oeste completamente",
+        recompensaXP:  NumberInt(300),
+        tipo:          "exploracion",
+        fechaObtenido: ISODate("2025-06-05T12:00:00Z"),
+        horasJugadas:  Double(5.0)
       },
       {
-        nombre:       "Campeon Defensor",
-        descripcion:  "Bloquea 100 ataques enemigos",
-        recompensaXP: NumberInt(700),
-        tipo:         "defensa",
-        fechaObtenido: ISODate("2025-06-06T07:00:00Z")
+        nombre:        "Campeon Defensor",
+        descripcion:   "Bloquea 100 ataques enemigos",
+        recompensaXP:  NumberInt(700),
+        tipo:          "defensa",
+        fechaObtenido: ISODate("2025-06-06T07:00:00Z"),
+        horasJugadas:  Double(24.0)
       }
     ]
   },
@@ -126,11 +134,12 @@ db.Personaje.insertMany([
     },
     logros: [
       {
-        nombre:       "Viajero del Oeste",
-        descripcion:  "Explora la region Oeste completamente",
-        recompensaXP: NumberInt(300),
-        tipo:         "exploracion",
-        fechaObtenido: ISODate("2025-06-12T15:00:00Z")
+        nombre:        "Viajero del Oeste",
+        descripcion:   "Explora la region Oeste completamente",
+        recompensaXP:  NumberInt(300),
+        tipo:          "exploracion",
+        fechaObtenido: ISODate("2025-06-12T15:00:00Z"),
+        horasJugadas:  Double(1.0)
       }
     ]
   },
@@ -151,18 +160,20 @@ db.Personaje.insertMany([
     },
     logros: [
       {
-        nombre:       "Conquistador de Mazmorras",
-        descripcion:  "Completa tu primera mazmorra",
-        recompensaXP: NumberInt(500),
-        tipo:         "combate",
-        fechaObtenido: ISODate("2025-06-08T12:00:00Z")
+        nombre:        "Conquistador de Mazmorras",
+        descripcion:   "Completa tu primera mazmorra",
+        recompensaXP:  NumberInt(500),
+        tipo:          "combate",
+        fechaObtenido: ISODate("2025-06-08T12:00:00Z"),
+        horasJugadas:  Double(2.0)
       },
       {
-        nombre:       "Viajero del Oeste",
-        descripcion:  "Explora la region Oeste completamente",
-        recompensaXP: NumberInt(300),
-        tipo:         "exploracion",
-        fechaObtenido: ISODate("2025-06-09T12:00:00Z")
+        nombre:        "Viajero del Oeste",
+        descripcion:   "Explora la region Oeste completamente",
+        recompensaXP:  NumberInt(300),
+        tipo:          "exploracion",
+        fechaObtenido: ISODate("2025-06-09T12:00:00Z"),
+        horasJugadas:  Double(26.0)
       }
     ]
   },
@@ -183,18 +194,20 @@ db.Personaje.insertMany([
     },
     logros: [
       {
-        nombre:       "Maestro Mago",
-        descripcion:  "Aprende 10 hechizos diferentes",
-        recompensaXP: NumberInt(800),
-        tipo:         "magia",
-        fechaObtenido: ISODate("2025-06-15T12:00:00Z")
+        nombre:        "Maestro Mago",
+        descripcion:   "Aprende 10 hechizos diferentes",
+        recompensaXP:  NumberInt(800),
+        tipo:          "magia",
+        fechaObtenido: ISODate("2025-06-15T12:00:00Z"),
+        horasJugadas:  Double(2.0)
       },
       {
-        nombre:       "Descubridor de Tesoros",
-        descripcion:  "Encuentra 50 tesoros ocultos",
-        recompensaXP: NumberInt(600),
-        tipo:         "exploracion",
-        fechaObtenido: ISODate("2025-06-15T15:00:00Z")
+        nombre:        "Descubridor de Tesoros",
+        descripcion:   "Encuentra 50 tesoros ocultos",
+        recompensaXP:  NumberInt(600),
+        tipo:          "exploracion",
+        fechaObtenido: ISODate("2025-06-15T15:00:00Z"),
+        horasJugadas:  Double(5.0)
       }
     ]
   }

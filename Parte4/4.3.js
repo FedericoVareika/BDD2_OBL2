@@ -1,21 +1,6 @@
 db.Personaje.aggregate([
   { $unwind: "$logros" },
-  { 
-    $match: {
-      $expr: {
-        $lte: [
-          {
-            $dateDiff: {
-              startDate: "$fechaRegistro",
-              endDate:   "$logros.fechaObtenido",
-              unit:      "hour"
-            }
-          },
-          10
-        ]
-      }
-    }
-  },
+  { $match: { "logros.horasJugadas": { $lte: 10 } } },
   {
     $group: {
       _id:           "$logros.nombre",
