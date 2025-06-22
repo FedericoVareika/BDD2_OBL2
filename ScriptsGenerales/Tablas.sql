@@ -1,3 +1,4 @@
+DROP TABLE Personaje_Progreso_Diario;
 DROP TABLE Usuario_Progresa_Mision;
 DROP TABLE Personaje_Tiene_Habilidad;
 DROP TABLE Mision_Desbloquea_Habilidad;
@@ -86,6 +87,8 @@ CREATE TABLE Mision (
   codigo      VARCHAR2(50)   NOT NULL UNIQUE,
   nombre      VARCHAR2(100)  NOT NULL,
   descripcion VARCHAR2(1000),
+  tipo        VARCHAR2(10) DEFAULT ('Principal') NOT NULL
+                   CHECK (tipo IN ('Principal', 'Secundaria')),
   nivelMinimo NUMBER         NOT NULL CHECK (nivelMinimo BETWEEN 1 AND 342),
   experiencia NUMBER         NOT NULL CHECK (experiencia >= 0),
   monedas     NUMBER         NOT NULL CHECK (monedas >= 0)
@@ -186,6 +189,7 @@ CREATE TABLE Usuario_Progresa_Mision (
                         CHECK (estado IN ('No iniciada', 'En progreso', 'Completada')),
   recompensa_asignada CHAR(1) DEFAULT ('N') NOT NULL
                         CHECK (recompensa_asignada IN ('Y','N')) ,
+  fechaCompletada     DATE,
   PRIMARY KEY (idPersonaje, idMision),
   FOREIGN KEY (idPersonaje) REFERENCES Personaje(id),
   FOREIGN KEY (idMision) REFERENCES Mision(id)
@@ -348,4 +352,16 @@ CREATE TABLE Jefe_Tiene_Habilidad (
     FOREIGN KEY (idJefe) REFERENCES Jefe(id),
   CONSTRAINT fk_jh_habilidad
     FOREIGN KEY (idHabilidad) REFERENCES Habilidad(id)
+);
+
+CREATE TABLE Personaje_Progreso_Diario (
+  idPersonaje NUMBER NOT NULL, 
+  fecha DATE NOT NULL,
+  nivelesAumentados NUMBER NOT NULL CHECK (nivelesAumentados BETWEEN 0 AND 342),
+  regaloAcreditado CHAR(1) DEFAULT ('N') NOT NULL
+                        CHECK (regaloAcreditado IN ('Y','N')),
+  CONSTRAINT pk_personaje_fecha
+    PRIMARY KEY (idPersonaje, fecha),
+  CONSTRAINT fk_ppd_personaje 
+    FOREIGN KEY (idPersonaje) REFERENCES Personaje(id)
 );

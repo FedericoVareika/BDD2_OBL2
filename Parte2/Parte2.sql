@@ -108,9 +108,72 @@ A estos personajes se les debe acreditar en su inventario un ítem de rareza
 aleatoria.
 */
 
--- CREATE OR REPLACE PROCEDURE items_mas_equipados (
---   p_categoria IN ItemTable.categoria%TYPE DEFAULT NULL
--- ) AS
--- BEGIN
--- END;
--- /
+CREATE OR REPLACE PROCEDURE regalar_items_a_jugadores_activos
+AS
+  CURSOR c_personajes IS 
+    SELECT ppd.idPersonaje as id
+    FROM Personaje_Progreso_Diario ppd 
+    WHERE TRUNC(ppd.fecha) = TRUNC(CURRENT_DATE)
+      AND ppd.regaloAcreditado = 'N'
+      AND ppd.nivelesAumentados >= 3 
+      AND EXISTS (
+        SELECT 1 
+        FROM Usuario_Progresa_Mision upm 
+        JOIN Mision m 
+          ON m.id = upm.idMision
+        WHERE upm.idPersonaje = ppd.idPersonaje 
+          AND TRUNC(upm.fechaCompletada) = TRUNC(ppd.fecha)
+          AND m.tipo = 'Principal' 
+          AND upm.estado = 'Completada' 
+      )
+    GROUP BY ppd.idPersonaje;
+  v_id_item ItemTable.id%TYPE;
+  v_id_inventario Inventario.id%TYPE;
+BEGIN
+  FOR personaje_rec IN c_personajes
+  LOOP 
+    -- Item aleatorio
+    SELECT * INTO v_id_item 
+    FROM (
+      SELECT it.id FROM ItemTable it 
+      ORDER BY dbms_random.value
+    )
+    WHERE ROWNUM = 1;
+
+    -- Inventario del personaje actual
+    SELECT id INTO v_id_inventario 
+    FROM Inventario 
+    WHERE idPersonaje = personaje_rec.id;
+
+    -- Acreditar el item al personaje
+    MERGE INTO Inventario_Tiene_Item iti 
+    USING (SELECT 
+        v_id_inventario AS idInventario,
+        v_id_item AS idItem 
+      FROM dual) key_values
+    ON (iti.idInventario = key_values.idInventario 
+      AND iti.idItem = key_values.idItem)
+    WHEN MATCHED THEN 
+      UPDATE SET iti.cantidad = iti.cantidad + 1
+    WHEN NOT MATCHED THEN 
+      INSERT (iti.idInventario, iti.idItem, iti.cantidad, iti.equipado) 
+        VALUES (key_values.idInventario, key_values.idItem, 1, 'N');
+
+    -- Marcar que este personaje ya fue acreditado por el dia de hoy 
+    UPDATE Personaje_Progreso_Diario ppd 
+    SET ppd.regaloAcreditado = 'Y' 
+    WHERE ppd.idPersonaje = personaje_rec.id 
+      AND ppd.fecha = CURRENT_DATE;
+
+  END LOOP;
+
+  COMMIT;
+
+EXCEPTION 
+  WHEN OTHERS THEN 
+    ROLLBACK;
+    RAISE_APPLICATION_ERROR(
+      -20001,
+      'Hubo un error acreditando los regalos diarios.');
+END;
+/
