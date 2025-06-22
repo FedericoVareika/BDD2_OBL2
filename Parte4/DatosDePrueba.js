@@ -1,72 +1,51 @@
-db.Logros.insertMany([
+db.Personaje.insertMany([
   {
-    _id: ObjectId("650000000000000000000001"),
-    nombre:       "Explorador Novato",
-    descripcion:  "Visita tu primera ubicación oculta",
-    recompensaXP: 200,
-    tipo:         "exploración"
-  },
-  {
-    _id: ObjectId("650000000000000000000002"),
-    nombre:       "Conquistador de Mazmorras",
-    descripcion:  "Completa tu primera mazmorra",
-    recompensaXP: 500,
-    tipo:         "combate"
-  },
-  {
-    _id: ObjectId("650000000000000000000003"),
-    nombre:       "Viajero del Oeste",
-    descripcion:  "Explora la región Oeste completamente",
-    recompensaXP: 300,
-    tipo:         "exploración"
-  },
-  {
-    _id: ObjectId("650000000000000000000004"),
-    nombre:       "Maestro Mago",
-    descripcion:  "Aprende 10 hechizos diferentes",
-    recompensaXP: 800,
-    tipo:         "magia"
-  },
-  {
-    _id: ObjectId("650000000000000000000005"),
-    nombre:       "Campeón Defensor",
-    descripcion:  "Bloquea 100 ataques enemigos",
-    recompensaXP: 700,
-    tipo:         "defensa"
-  }
-]);
-
-
-db.Usuario.insertMany([
-  {
-    _id: ObjectId("660000000000000000000011"),
+    _id: ObjectId("660000000000000000000021"),
     correo:        "ana@ejemplo.com",
     nombre:        "Ana",
     contrasena:    "Secreto01",
     fechaRegistro: ISODate("2025-06-01T08:00:00Z"),
     pais:          "Uruguay",
-    continente:    "América",
+    continente:    "Uruguay",
     estadisticas: {
       totalLogros:              NumberInt(3),
       totalEnemigosDerrotados:  NumberInt(150),
       totalMisionesCompletadas: NumberInt(5),
-      totalHorasJugadas:        12.5,
+      totalHorasJugadas:        Double(12.5),
       progresoGeneral:          Double(50.0)
     },
     logros: [
-      { idLogro: ObjectId("650000000000000000000001"), fechaObtenido: ISODate("2025-06-01T10:00:00Z") },
-      { idLogro: ObjectId("650000000000000000000003"), fechaObtenido: ISODate("2025-06-01T15:00:00Z") },
-      { idLogro: ObjectId("650000000000000000000002"), fechaObtenido: ISODate("2025-06-02T12:00:00Z") }
+      {
+        nombre:       "Explorador Novato",
+        descripcion:  "Visita tu primera ubicacion oculta",
+        recompensaXP: NumberInt(200),
+        tipo:         "exploracion",
+        fechaObtenido: ISODate("2025-06-01T10:00:00Z")
+      },
+      {
+        nombre:       "Viajero del Oeste",
+        descripcion:  "Explora la region Oeste completamente",
+        recompensaXP: NumberInt(300),
+        tipo:         "exploracion",
+        fechaObtenido: ISODate("2025-06-01T12:00:00Z")
+      },
+      {
+        nombre:       "Conquistador de Mazmorras",
+        descripcion:  "Completa tu primera mazmorra",
+        recompensaXP: NumberInt(500),
+        tipo:         "combate",
+        fechaObtenido: ISODate("2025-06-02T08:00:00Z")
+      }
     ]
   },
   {
-    _id: ObjectId("660000000000000000000012"),
+    _id: ObjectId("660000000000000000000022"),
     correo:        "bruno@ejemplo.com",
     nombre:        "Bruno",
     contrasena:    "BrunoPass9",
     fechaRegistro: ISODate("2025-06-10T09:00:00Z"),
     pais:          "Chile",
-    continente:    "América",
+    continente:    "America",
     estadisticas: {
       totalLogros:              NumberInt(2),
       totalEnemigosDerrotados:  NumberInt(80),
@@ -75,12 +54,24 @@ db.Usuario.insertMany([
       progresoGeneral:          Double(60.0)
     },
     logros: [
-      { idLogro: ObjectId("650000000000000000000001"), fechaObtenido: ISODate("2025-06-10T13:00:00Z") },
-      { idLogro: ObjectId("650000000000000000000004"), fechaObtenido: ISODate("2025-06-10T18:00:00Z") }
+      {
+        nombre:       "Explorador Novato",
+        descripcion:  "Visita tu primera ubicacion oculta",
+        recompensaXP: NumberInt(200),
+        tipo:         "exploracion",
+        fechaObtenido: ISODate("2025-06-10T11:00:00Z")
+      },
+      {
+        nombre:       "Maestro Mago",
+        descripcion:  "Aprende 10 hechizos diferentes",
+        recompensaXP: NumberInt(800),
+        tipo:         "magia",
+        fechaObtenido: ISODate("2025-06-10T18:00:00Z")
+      }
     ]
   },
   {
-    _id: ObjectId("660000000000000000000013"),
+    _id: ObjectId("660000000000000000000023"),
     correo:        "carla@ejemplo.com",
     nombre:        "Carla",
     contrasena:    "CarlaPass1",
@@ -91,23 +82,41 @@ db.Usuario.insertMany([
       totalLogros:              NumberInt(3),
       totalEnemigosDerrotados:  NumberInt(200),
       totalMisionesCompletadas: NumberInt(7),
-      totalHorasJugadas:        9.5,
+      totalHorasJugadas:        Double(9.5),
       progresoGeneral:          Double(55.0)
     },
     logros: [
-      { idLogro: ObjectId("650000000000000000000001"), fechaObtenido: ISODate("2025-06-05T08:00:00Z") },
-      { idLogro: ObjectId("650000000000000000000003"), fechaObtenido: ISODate("2025-06-05T10:00:00Z") },
-      { idLogro: ObjectId("650000000000000000000005"), fechaObtenido: ISODate("2025-06-05T11:00:00Z") }
+      {
+        nombre:       "Explorador Novato",
+        descripcion:  "Visita tu primera ubicacion oculta",
+        recompensaXP: NumberInt(200),
+        tipo:         "exploracion",
+        fechaObtenido: ISODate("2025-06-05T08:00:00Z")
+      },
+      {
+        nombre:       "Viajero del Oeste",
+        descripcion:  "Explora la region Oeste completamente",
+        recompensaXP: NumberInt(300),
+        tipo:         "exploracion",
+        fechaObtenido: ISODate("2025-06-05T12:00:00Z")
+      },
+      {
+        nombre:       "Campeon Defensor",
+        descripcion:  "Bloquea 100 ataques enemigos",
+        recompensaXP: NumberInt(700),
+        tipo:         "defensa",
+        fechaObtenido: ISODate("2025-06-06T07:00:00Z")
+      }
     ]
   },
   {
-    _id: ObjectId("660000000000000000000014"),
+    _id: ObjectId("660000000000000000000024"),
     correo:        "diego@ejemplo.com",
     nombre:        "Diego",
     contrasena:    "DiegoPass2",
     fechaRegistro: ISODate("2025-06-12T14:00:00Z"),
     pais:          "Mexico",
-    continente:    "América",
+    continente:    "Mexico",
     estadisticas: {
       totalLogros:              NumberInt(1),
       totalEnemigosDerrotados:  NumberInt(50),
@@ -116,17 +125,23 @@ db.Usuario.insertMany([
       progresoGeneral:          Double(30.0)
     },
     logros: [
-      { idLogro: ObjectId("650000000000000000000003"), fechaObtenido: ISODate("2025-06-12T15:00:00Z") }
+      {
+        nombre:       "Viajero del Oeste",
+        descripcion:  "Explora la region Oeste completamente",
+        recompensaXP: NumberInt(300),
+        tipo:         "exploracion",
+        fechaObtenido: ISODate("2025-06-12T15:00:00Z")
+      }
     ]
   },
   {
-    _id: ObjectId("660000000000000000000015"),
+    _id: ObjectId("660000000000000000000025"),
     correo:        "elena@ejemplo.com",
     nombre:        "Elena",
     contrasena:    "ElenaPass3",
     fechaRegistro: ISODate("2025-06-08T10:00:00Z"),
     pais:          "Peru",
-    continente:    "América",
+    continente:    "America",
     estadisticas: {
       totalLogros:              NumberInt(2),
       totalEnemigosDerrotados:  NumberInt(65),
@@ -135,8 +150,52 @@ db.Usuario.insertMany([
       progresoGeneral:          Double(60.0)
     },
     logros: [
-      { idLogro: ObjectId("650000000000000000000002"), fechaObtenido: ISODate("2025-06-08T12:00:00Z") },
-      { idLogro: ObjectId("650000000000000000000003"), fechaObtenido: ISODate("2025-06-08T19:00:00Z") }
+      {
+        nombre:       "Conquistador de Mazmorras",
+        descripcion:  "Completa tu primera mazmorra",
+        recompensaXP: NumberInt(500),
+        tipo:         "combate",
+        fechaObtenido: ISODate("2025-06-08T12:00:00Z")
+      },
+      {
+        nombre:       "Viajero del Oeste",
+        descripcion:  "Explora la region Oeste completamente",
+        recompensaXP: NumberInt(300),
+        tipo:         "exploracion",
+        fechaObtenido: ISODate("2025-06-09T12:00:00Z")
+      }
+    ]
+  },
+  {
+    _id: ObjectId("660000000000000000000026"),
+    correo:        "federico@ejemplo.com",
+    nombre:        "Federico",
+    contrasena:    "FedPass4",
+    fechaRegistro: ISODate("2025-06-15T10:00:00Z"),
+    pais:          "Argentina",
+    continente:    "America",
+    estadisticas: {
+      totalLogros:              NumberInt(2),
+      totalEnemigosDerrotados:  NumberInt(120),
+      totalMisionesCompletadas: NumberInt(6),
+      totalHorasJugadas:        Double(7.0),
+      progresoGeneral:          Double(45.0)
+    },
+    logros: [
+      {
+        nombre:       "Maestro Mago",
+        descripcion:  "Aprende 10 hechizos diferentes",
+        recompensaXP: NumberInt(800),
+        tipo:         "magia",
+        fechaObtenido: ISODate("2025-06-15T12:00:00Z")
+      },
+      {
+        nombre:       "Descubridor de Tesoros",
+        descripcion:  "Encuentra 50 tesoros ocultos",
+        recompensaXP: NumberInt(600),
+        tipo:         "exploracion",
+        fechaObtenido: ISODate("2025-06-15T15:00:00Z")
+      }
     ]
   }
 ]);

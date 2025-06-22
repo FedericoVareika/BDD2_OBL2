@@ -1,28 +1,11 @@
-db.createCollection("Logros", {
-  validator: {
-    $jsonSchema: {
-      bsonType: "object",
-      required: ["nombre","descripcion","recompensaXP","tipo"],
-      properties: {
-        nombre:       { bsonType: "string" },
-        descripcion:  { bsonType: "string" },
-        recompensaXP: { bsonType: "int",    minimum: 0 },
-        tipo:         { bsonType: "string" }
-      }
-    }
-  },
-  validationLevel:  "strict",
-  validationAction: "error"
-});
-
-db.createCollection("Usuario", {
+db.createCollection("Personaje", {
   validator: {
     $jsonSchema: {
       bsonType: "object",
       required: [
-        "correo","nombre","contrasena",
-        "fechaRegistro","pais","continente",
-        "estadisticas","logros"
+        "correo", "nombre", "contrasena",
+        "fechaRegistro", "pais", "continente",
+        "estadisticas", "logros"
       ],
       properties: {
         correo:        { bsonType: "string" },
@@ -30,9 +13,8 @@ db.createCollection("Usuario", {
         contrasena:    { bsonType: "string", minLength: 6, maxLength: 16 },
         fechaRegistro: { bsonType: "date" },
         pais:          { bsonType: "string" },
-        continente:    {
-          enum: ["África","América","Asia","Europa","Oceanía"]
-        },
+        continente:    { enum: ["America","Asia","Europa","Mexico","Uruguay"] },
+
         estadisticas: {
           bsonType: "object",
           required: [
@@ -43,20 +25,30 @@ db.createCollection("Usuario", {
             "progresoGeneral"
           ],
           properties: {
-            totalLogros:              { bsonType: "int",    minimum: 0 },
-            totalEnemigosDerrotados:  { bsonType: "int",    minimum: 0 },
-            totalMisionesCompletadas: { bsonType: "int",    minimum: 0 },
-            totalHorasJugadas:        { bsonType: "double", minimum: 0 },
-            progresoGeneral:          { bsonType: "double", minimum: 0, maximum: 100 }
+            totalLogros:             { bsonType: "int",    minimum: 0 },
+            totalEnemigosDerrotados: { bsonType: "int",    minimum: 0 },
+            totalMisionesCompletadas:{ bsonType: "int",    minimum: 0 },
+            totalHorasJugadas:       { bsonType: "double", minimum: 0 },
+            progresoGeneral:         { bsonType: "double", minimum: 0, maximum: 100 }
           }
         },
+
         logros: {
           bsonType: "array",
           items: {
             bsonType: "object",
-            required: ["idLogro","fechaObtenido"],
+            required: [
+              "nombre",
+              "descripcion",
+              "recompensaXP",
+              "tipo",
+              "fechaObtenido"
+            ],
             properties: {
-              idLogro:      { bsonType: "objectId" },
+              nombre:       { bsonType: "string" },
+              descripcion:  { bsonType: "string" },
+              recompensaXP: { bsonType: "int",    minimum: 0 },
+              tipo:         { bsonType: "string" },
               fechaObtenido:{ bsonType: "date" }
             }
           }

@@ -1,4 +1,4 @@
-db.Usuario.aggregate([
+db.Personaje.aggregate([
   { 
     $match: { 
       "estadisticas.progresoGeneral": { $lte: 60 } 
@@ -20,4 +20,3 @@ db.Usuario.aggregate([
     }
   }
 ]);
-

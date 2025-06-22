@@ -1,4 +1,4 @@
-db.Usuario.aggregate([
+db.Personaje.aggregate([
   { $unwind: "$logros" },
   { 
     $match: {
@@ -18,25 +18,16 @@ db.Usuario.aggregate([
   },
   {
     $group: {
-      _id:           "$logros.idLogro",
+      _id:           "$logros.nombre",
       vecesObtenido: { $sum: 1 }
     }
   },
   { $sort: { vecesObtenido: -1 } },
   { $limit: 5 },
   {
-    $lookup: {
-      from:         "Logros",
-      localField:   "_id",
-      foreignField: "_id",
-      as:           "infoLogro"
-    }
-  },
-  { $unwind: "$infoLogro" },
-  {
     $project: {
       _id:           0,
-      nombre:        "$infoLogro.nombre",
+      nombre:        "$_id",
       vecesObtenido: 1
     }
   }

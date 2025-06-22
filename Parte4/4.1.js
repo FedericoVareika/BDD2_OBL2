@@ -1,15 +1,6 @@
-db.Usuario.aggregate([
+db.Personaje.aggregate([
   { $unwind: "$logros" },
-  {
-    $lookup: {
-      from:         "Logros",
-      localField:   "logros.idLogro",
-      foreignField: "_id",
-      as:           "infoLogro"
-    }
-  },
-  { $unwind: "$infoLogro" },
-  { $match: { "infoLogro.tipo": "exploración" } },
+  { $match: { "logros.tipo": "exploracion" } },  
   {
     $group: {
       _id: {
@@ -21,10 +12,10 @@ db.Usuario.aggregate([
   },
   {
     $project: {
-      _id:               0,
-      nombre:            "$_id.nombre",
-      correo:            "$_id.correo",
-      totalExploracion:  1
+      _id:              0,
+      nombre:           "$_id.nombre",
+      correo:           "$_id.correo",
+      totalExploracion: 1
     }
   }
 ]);
