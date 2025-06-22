@@ -13,7 +13,7 @@ db.createCollection("Personaje", {
         contrasena:    { bsonType: "string", minLength: 6, maxLength: 16 },
         fechaRegistro: { bsonType: "date" },
         pais:          { bsonType: "string" },
-        continente:    { enum: ["America","Asia","Europa","Mexico","Uruguay"] },
+        continente:    { enum: ["America","Asia","Europa","Africa","Oceania"] },
 
         estadisticas: {
           bsonType: "object",
