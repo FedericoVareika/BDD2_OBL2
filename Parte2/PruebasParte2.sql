@@ -130,3 +130,64 @@ END;
 
 ROLLBACK TO test_init;
 
+-- Another test
+
+DECLARE
+  v_id_juan_inv     Inventario.id%TYPE;
+  v_id_federica_inv Inventario.id%TYPE;
+  v_items           SYS_REFCURSOR;
+  v_nombre          ItemTable.nombre%TYPE;
+  v_id_item         ItemTable.id%TYPE;
+  v_cantidad        NUMBER := 1;
+BEGIN
+  -- Obtener IDs de inventario
+  SELECT id INTO v_id_juan_inv FROM Inventario
+  WHERE idPersonaje = (SELECT id FROM Personaje WHERE idUsuario = (SELECT id FROM Usuario WHERE nombre = 'Juan'));
+
+  SELECT id INTO v_id_federica_inv FROM Inventario
+  WHERE idPersonaje = (SELECT id FROM Personaje WHERE idUsuario = (SELECT id FROM Usuario WHERE nombre = 'Federica'));
+
+  -- Crear 11 ítems nuevos si es necesario
+  FOR i IN 1..11 LOOP
+    BEGIN
+      INSERT INTO ItemTable(nombre, categoria, rareza, nivelMinimo, caracteristicasQueAfecta, intercambiable)
+      VALUES ('ItemTest' || i, 'armas', 'rara', 1, 'fuerza', 1);
+    EXCEPTION
+      WHEN DUP_VAL_ON_INDEX THEN NULL; -- Ya existe
+    END;
+  END LOOP;
+
+  -- Asignar ítems equipados a Juan (11 ítems con cantidad creciente)
+  FOR i IN 1..11 LOOP
+    SELECT id INTO v_id_item FROM ItemTable WHERE nombre = 'ItemTest' || i;
+
+    MERGE INTO Inventario_Tiene_Item iti
+    USING DUAL ON (iti.idInventario = v_id_juan_inv AND iti.idItem = v_id_item)
+    WHEN MATCHED THEN
+      UPDATE SET cantidad = i, equipado = 'Y'
+    WHEN NOT MATCHED THEN
+      INSERT (idInventario, idItem, cantidad, equipado)
+      VALUES (v_id_juan_inv, v_id_item, i, 'Y');
+  END LOOP;
+
+  -- Asignar ítems equipados a Federica (11 ítems con cantidad creciente)
+  FOR i IN 5..11 LOOP
+    SELECT id INTO v_id_item FROM ItemTable WHERE nombre = 'ItemTest' || i;
+
+    MERGE INTO Inventario_Tiene_Item iti
+    USING DUAL ON (iti.idInventario = v_id_federica_inv AND iti.idItem = v_id_item)
+    WHEN MATCHED THEN
+      UPDATE SET cantidad = i, equipado = 'Y'
+    WHEN NOT MATCHED THEN
+      INSERT (idInventario, idItem, cantidad, equipado)
+      VALUES (v_id_federica_inv, v_id_item, i, 'Y');
+  END LOOP;
+
+  -- Imprimir los 10 ítems más equipados sin filtro
+  DBMS_OUTPUT.PUT_LINE('--- TOP 10 EQUIPADOS (sin filtro) ---');
+  items_mas_equipados;
+
+END;
+/
+
+ROLLBACK test_init;

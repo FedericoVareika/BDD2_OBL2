@@ -108,8 +108,9 @@ A estos personajes se les debe acreditar en su inventario un ítem de rareza
 aleatoria.
 */
 
-CREATE OR REPLACE PROCEDURE items_mas_equipados (
-) AS
-BEGIN
-END;
-/
+-- CREATE OR REPLACE PROCEDURE items_mas_equipados (
+--   p_categoria IN ItemTable.categoria%TYPE DEFAULT NULL
+-- ) AS
+-- BEGIN
+-- END;
+-- /
