@@ -37,7 +37,15 @@ db.Personaje.insertMany([
         recompensaXP:  NumberInt(500),
         tipo:          "combate",
         fechaObtenido: ISODate("2025-06-02T08:00:00Z"),
-        horasJugadas:  Double(24.0)
+        horasJugadas:  Double(24.0) 
+      },
+      {
+        nombre:        "Investigador Arcano",
+        descripcion:   "Descubre secretos ancestrales",
+        recompensaXP:  NumberInt(350),
+        tipo:          "magia",
+        fechaObtenido: ISODate("2025-06-01T14:00:00Z"),
+        horasJugadas:  Double(11.0) 
       }
     ]
   },
@@ -113,7 +121,7 @@ db.Personaje.insertMany([
         recompensaXP:  NumberInt(700),
         tipo:          "defensa",
         fechaObtenido: ISODate("2025-06-06T07:00:00Z"),
-        horasJugadas:  Double(24.0)
+        horasJugadas:  Double(24.0) 
       }
     ]
   },
@@ -173,7 +181,7 @@ db.Personaje.insertMany([
         recompensaXP:  NumberInt(300),
         tipo:          "exploracion",
         fechaObtenido: ISODate("2025-06-09T12:00:00Z"),
-        horasJugadas:  Double(26.0)
+        horasJugadas:  Double(26.0) 
       }
     ]
   },
@@ -208,6 +216,40 @@ db.Personaje.insertMany([
         tipo:          "exploracion",
         fechaObtenido: ISODate("2025-06-15T15:00:00Z"),
         horasJugadas:  Double(5.0)
+      }
+    ]
+  },
+  {
+    _id: ObjectId("660000000000000000000027"),
+    correo:        "gustavo@ejemplo.com",
+    nombre:        "Gustavo",
+    contrasena:    "GusPass5",
+    fechaRegistro: ISODate("2025-06-20T10:00:00Z"),
+    pais:          "Colombia",
+    continente:    "America",
+    estadisticas: {
+      totalLogros:              NumberInt(2),
+      totalEnemigosDerrotados:  NumberInt(30),
+      totalMisionesCompletadas: NumberInt(1),
+      totalHorasJugadas:        Double(2.0),
+      progresoGeneral:          Double(10.0)
+    },
+    logros: [
+      {
+        nombre:        "Maestro Mago",
+        descripcion:   "Aprende 10 hechizos diferentes",
+        recompensaXP:  NumberInt(800),
+        tipo:          "magia",
+        fechaObtenido: ISODate("2025-06-20T11:00:00Z"),
+        horasJugadas:  Double(1.0)
+      },
+      {
+        nombre:        "Campeon Defensor",
+        descripcion:   "Bloquea 100 ataques enemigos",
+        recompensaXP:  NumberInt(700),
+        tipo:          "defensa",
+        fechaObtenido: ISODate("2025-06-20T12:00:00Z"),
+        horasJugadas:  Double(2.0)
       }
     ]
   }
