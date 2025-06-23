@@ -27,35 +27,50 @@ END;
 ----------------------------------------------------------------------------
 -- Un personaje no puede equipar dos ítems de la misma categoría a la vez -- 
 
-CREATE OR REPLACE TRIGGER PERSONAJE_EQUIPA_ITEMS_DE_CATEGORIA_UNICA 
-BEFORE INSERT OR UPDATE
-  ON Inventario_Tiene_Item 
-FOR EACH ROW
-DECLARE 
-  vlCategoriaNueva ItemTable.categoria%TYPE;
-  vlTipoYaEquipado Inventario_Tiene_Item.equipado%TYPE;
-BEGIN 
+CREATE OR REPLACE TRIGGER PERSONAJE_EQUIPA_ITEMS_DE_CATEGORIA_UNICA
+FOR INSERT OR UPDATE ON Inventario_Tiene_Item
+COMPOUND TRIGGER
+
+  TYPE t_equipa IS RECORD (
+    inv_id    Inventario_Tiene_Item.idInventario%TYPE,
+    categoria ItemTable.categoria%TYPE
+  );
+  TYPE t_equipa_tab IS TABLE OF t_equipa INDEX BY PLS_INTEGER;
+  equipa t_equipa_tab;
+
+BEFORE EACH ROW IS
+  v_categoria ItemTable.categoria%TYPE;
+BEGIN
   IF :NEW.equipado = 'Y' THEN
-    SELECT i.categoria INTO vlCategoriaNueva
-    FROM ItemTable i 
-    WHERE i.Id = :NEW.idItem;
-
-    SELECT MAX(inv_item.equipado) INTO vlTipoYaEquipado
-    FROM Inventario_Tiene_Item inv_item 
-    LEFT JOIN ItemTable i 
-    ON inv_item.idItem = i.Id 
-    WHERE i.categoria = vlCategoriaNueva 
-    AND inv_item.idInventario = :NEW.idInventario
-    AND inv_item.idItem != :NEW.idItem;
-
-    IF vlTipoYaEquipado = 'Y' THEN
-      RAISE_APPLICATION_ERROR(
-        -20002,
-        'No se puede equipar item de categoria ' 
-        || vlCategoriaNueva 
-        || ' para este personaje ya que ya hay un item de la misma categoria equipado');
-    END IF; 
+    SELECT categoria INTO v_categoria FROM ItemTable WHERE id = :NEW.idItem;
+    equipa(equipa.COUNT + 1) := t_equipa(:NEW.idInventario, v_categoria);
   END IF;
+END BEFORE EACH ROW;
+
+AFTER STATEMENT IS
+  v_count NUMBER;
+BEGIN
+  IF equipa.COUNT > 0 THEN
+    FOR idx IN equipa.COUNT LOOP
+      SELECT COUNT(*) INTO v_count
+      FROM Inventario_Tiene_Item iti
+      JOIN ItemTable it ON iti.idItem = it.id
+      WHERE iti.idInventario = equipa(idx).inv_id
+        AND it.categoria = equipa(idx).categoria
+        AND iti.equipado = 'Y';
+
+      IF v_count > 1 THEN
+        RAISE_APPLICATION_ERROR(
+          -20002,
+          'Solo se permite un item equipado por categoría en inventario '
+          || equipa(idx).inv_id || ', categoría '
+          || equipa(idx).categoria
+        );
+      END IF;
+    END LOOP;
+  END IF;
+END AFTER STATEMENT;
+
 END;
 /
 

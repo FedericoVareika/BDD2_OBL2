@@ -189,6 +189,12 @@ END;
 
 ROLLBACK TO test_init;
 
+-- Desactivar trigger en conflicto
+ALTER TRIGGER PERSONAJE_EQUIPA_ITEMS_DE_CATEGORIA_UNICA DISABLE;
+/
+
+SAVEPOINT test_init;
+
 DECLARE
   v_id_juan_inv     Inventario.id%TYPE;
   v_id_federica_inv Inventario.id%TYPE;
@@ -236,7 +242,7 @@ BEGIN
       VALUES (v_id_juan_inv, v_id_item, i, 'Y');
   END LOOP;
 
-  -- Asignar ítems equipados a Federica (11 ítems con cantidad creciente)
+  -- Asignar ítems equipados a Federica (6 ítems con cantidad creciente)
   FOR i IN 5..11 LOOP
     SELECT id INTO v_id_item FROM ItemTable WHERE nombre = 'ItemTest' || i;
 
@@ -257,6 +263,11 @@ END;
 /
 
 ROLLBACK TO test_init;
+
+-- Activar trigger en conflicto
+ALTER TRIGGER PERSONAJE_EQUIPA_ITEMS_DE_CATEGORIA_UNICA ENABLE;
+
+SAVEPOINT test_init;
 
 /*
 2.3: 
@@ -403,7 +414,7 @@ DECLARE
   v_id_item2 ItemTable.id%TYPE;
 BEGIN
   DBMS_OUTPUT.PUT_LINE(
-    '------------------------- Test 2.2(1) -------------------------' || chr(13) || chr(10) ||
+    '------------------------- Test 2.4 -------------------------' || chr(13) || chr(10) ||
     'Crear dos usuarios A y B, hacer que uno tenga la EspadaCorta, ' || chr(13) || chr(10) ||
     'y que el otro tenga la ArmaduraPlateada (ambos intercambiables).' || chr(13) || chr(10) ||
     'Intercambiarlos y comparar sus inventarios.' || chr(13) || chr(10) ||
