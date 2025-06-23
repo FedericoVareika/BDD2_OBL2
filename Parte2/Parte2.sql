@@ -52,6 +52,11 @@ BEGIN
     WHEN NOT MATCHED THEN INSERT (iti.idInventario, iti.idItem, iti.cantidad, iti.equipado)
       VALUES (v_id_inventario, item.id, item.cantidad, 'N');
 
+  UPDATE Personaje 
+  SET monedas = monedas + v_monedas,
+      experiencia = experiencia + v_xp 
+  WHERE id = p_id_personaje;
+
   UPDATE Usuario_Progresa_Mision 
   SET recompensa_asignada = 'Y'
   WHERE idPersonaje = p_id_personaje 
@@ -171,6 +176,10 @@ BEGIN
   COMMIT;
 
 EXCEPTION 
+  WHEN NO_DATA_FOUND THEN 
+    RAISE_APPLICATION_ERROR(
+      -20003,
+      'No existen items o los personajes no tienen inventarios adecuados');
   WHEN OTHERS THEN 
     ROLLBACK;
     RAISE_APPLICATION_ERROR(
@@ -237,15 +246,13 @@ BEGIN
     SELECT iti.cantidad INTO v_cantidad_item2 
     FROM Inventario_Tiene_Item iti   
     WHERE iti.idInventario = v_inventario2
-    AND iti.idItem = p_idItem1; 
+    AND iti.idItem = p_idItem2; 
   EXCEPTION 
     WHEN NO_DATA_FOUND THEN 
       RAISE_APPLICATION_ERROR(
         -20003,
         'Alguno de los personajes no tiene el item que quiere intercambiar.');
   END;
-
-  SAVEPOINT inicio;
 
   DELETE FROM Inventario_Tiene_Item 
   WHERE idInventario = v_inventario1 
@@ -264,7 +271,7 @@ BEGIN
   COMMIT;
 EXCEPTION
   WHEN OTHERS THEN
-      ROLLBACK TO inicio;
+      ROLLBACK;
       RAISE;
 END;
 /
