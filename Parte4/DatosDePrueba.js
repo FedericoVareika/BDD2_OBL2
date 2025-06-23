@@ -198,7 +198,7 @@ db.Personaje.insertMany([
       totalEnemigosDerrotados:  NumberInt(120),
       totalMisionesCompletadas: NumberInt(6),
       totalHorasJugadas:        Double(7.0),
-      progresoGeneral:          Double(45.0)
+      progresoGeneral:          Double(75.0)
     },
     logros: [
       {
