@@ -113,7 +113,7 @@ AS
   CURSOR c_personajes IS 
     SELECT ppd.idPersonaje as id
     FROM Personaje_Progreso_Diario ppd 
-    WHERE TRUNC(ppd.fecha) = TRUNC(CURRENT_DATE)
+    WHERE ppd.fecha + 1 >= SYSDATE
       AND ppd.regaloAcreditado = 'N'
       AND ppd.nivelesAumentados >= 3 
       AND EXISTS (
@@ -122,11 +122,12 @@ AS
         JOIN Mision m 
           ON m.id = upm.idMision
         WHERE upm.idPersonaje = ppd.idPersonaje 
-          AND TRUNC(upm.fechaCompletada) = TRUNC(ppd.fecha)
+          AND upm.fechaCompletada IS NOT NULL
+          AND upm.fechaCompletada + 1 >= SYSDATE
           AND m.tipo = 'Principal' 
-          AND upm.estado = 'Completada' 
+          AND upm.estado = 'Completada' -- esto es redundante
       )
-    GROUP BY ppd.idPersonaje;
+    GROUP BY ppd.idPersonaje; -- esto deberia ser redundante
   v_id_item ItemTable.id%TYPE;
   v_id_inventario Inventario.id%TYPE;
 BEGIN
@@ -163,7 +164,7 @@ BEGIN
     UPDATE Personaje_Progreso_Diario ppd 
     SET ppd.regaloAcreditado = 'Y' 
     WHERE ppd.idPersonaje = personaje_rec.id 
-      AND ppd.fecha = CURRENT_DATE;
+      AND ppd.fecha + 1 >= SYSDATE;
 
   END LOOP;
 
@@ -175,5 +176,95 @@ EXCEPTION
     RAISE_APPLICATION_ERROR(
       -20001,
       'Hubo un error acreditando los regalos diarios.');
+END;
+/
+
+/*
+2.4: 
+Implementar un servicio que permita el intercambio de ítems entre jugadores,
+verificando que el ítem sea intercambiable, que los jugadores y personajes
+existan, etc. 
+El intercambio debe ser atómico, es decir que debe partir de un estado 
+consistente y finalizar en un estado consistente.
+*/
+
+CREATE OR REPLACE PROCEDURE Intercambiar_Items(
+  p_idPersonaje1 IN NUMBER,
+  p_idItem1      IN NUMBER,
+  p_idPersonaje2 IN NUMBER,
+  p_idItem2      IN NUMBER
+) AS
+  v_intercambiable1 ItemTable.intercambiable%TYPE;
+  v_intercambiable2 ItemTable.intercambiable%TYPE;
+
+  v_inventario1 Inventario.id%TYPE;
+  v_inventario2 Inventario.id%TYPE;
+
+  v_cantidad_item1 Inventario_Tiene_Item.cantidad%TYPE;
+  v_cantidad_item2 Inventario_Tiene_Item.cantidad%TYPE;
+BEGIN
+  BEGIN 
+    SELECT intercambiable INTO v_intercambiable1 FROM ItemTable WHERE id = p_idItem1;
+    SELECT intercambiable INTO v_intercambiable2 FROM ItemTable WHERE id = p_idItem2;
+  EXCEPTION 
+    WHEN NO_DATA_FOUND THEN 
+      RAISE_APPLICATION_ERROR(-20003, 'Alguno de los ítems no existe.');
+  END;
+
+  IF v_intercambiable1 = 0 OR v_intercambiable2 = 0 THEN
+    RAISE_APPLICATION_ERROR(-20003, 'Alguno de los ítems no es intercambiable.');
+  END IF;
+
+  BEGIN 
+    SELECT i.id INTO v_inventario1 
+    FROM Inventario i
+    WHERE i.idPersonaje = p_idPersonaje1;
+
+    SELECT i.id INTO v_inventario2 
+    FROM Inventario i
+    WHERE i.idPersonaje = p_idPersonaje2;
+  EXCEPTION
+    WHEN NO_DATA_FOUND THEN 
+      RAISE_APPLICATION_ERROR(-20003, 'Alguno de los personajes no tiene inventario');
+  END;
+
+  BEGIN 
+    SELECT iti.cantidad INTO v_cantidad_item1 
+    FROM Inventario_Tiene_Item iti   
+    WHERE iti.idInventario = v_inventario1
+    AND iti.idItem = p_idItem1; 
+
+    SELECT iti.cantidad INTO v_cantidad_item2 
+    FROM Inventario_Tiene_Item iti   
+    WHERE iti.idInventario = v_inventario2
+    AND iti.idItem = p_idItem1; 
+  EXCEPTION 
+    WHEN NO_DATA_FOUND THEN 
+      RAISE_APPLICATION_ERROR(
+        -20003,
+        'Alguno de los personajes no tiene el item que quiere intercambiar.');
+  END;
+
+  SAVEPOINT inicio;
+
+  DELETE FROM Inventario_Tiene_Item 
+  WHERE idInventario = v_inventario1 
+    AND idItem = p_idItem1;
+
+  DELETE FROM Inventario_Tiene_Item 
+  WHERE idInventario = v_inventario2 
+    AND idItem = p_idItem2;
+
+  INSERT INTO Inventario_Tiene_Item (idInventario, idItem, cantidad, equipado)
+  VALUES (v_inventario1, p_idItem2, v_cantidad_item2, 'N');
+
+  INSERT INTO Inventario_Tiene_Item (idInventario, idItem, cantidad, equipado)
+  VALUES (v_inventario2, p_idItem1, v_cantidad_item1, 'N');
+
+  COMMIT;
+EXCEPTION
+  WHEN OTHERS THEN
+      ROLLBACK TO inicio;
+      RAISE;
 END;
 /
