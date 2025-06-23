@@ -182,3 +182,20 @@ BEGIN
   END IF;
 END;
 /
+
+-------------------------------------------------------------------------------------------
+-- La fechaCompletada de Usuario Progresa Mision es nula si la mision no esta completada --
+
+CREATE OR REPLACE TRIGGER PERSONAJE_PROGRESA_MISION_CON_NIVEL_ADECUADO
+BEFORE INSERT OR UPDATE
+  ON Usuario_Progresa_Mision 
+FOR EACH ROW
+BEGIN 
+  IF :NEW.estado != 'Completada' AND :NEW.fechaCompletada IS NOT NULL THEN
+    RAISE_APPLICATION_ERROR(
+      -20008,
+      'Una mision no completada no puede tener fechaCompletada no nula.'
+    );
+  END IF; 
+END;
+/

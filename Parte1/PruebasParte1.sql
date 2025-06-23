@@ -167,3 +167,23 @@ BEGIN
 END;
 /
 ROLLBACK TO test_init;
+
+-------------------------------------------------------------------------------------------
+-- La fechaCompletada de Usuario Progresa Mision es nula si la mision no esta completada --
+
+BEGIN
+    test_expected_error(
+      'La fecha completadaa de Usuario_Progresa_Mision tiene que ser nula si la mision no es completada',
+      q'[
+      INSERT INTO Usuario_Progresa_Mision(idPersonaje,idMision,estado,fechaCompletada)
+        VALUES(
+          (SELECT id FROM Personaje WHERE idUsuario=(SELECT id FROM Usuario WHERE nombre='Daniel')), 
+          (SELECT id FROM Mision    WHERE codigo='M003'),
+          'En progreso',
+          SYSDATE
+        )
+      ]',
+      -20008);
+END;
+/
+ROLLBACK TO test_init;
