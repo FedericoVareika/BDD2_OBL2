@@ -201,7 +201,7 @@ END;
 -------------------------------------------------------------------------------------------
 -- La fechaCompletada de Usuario Progresa Mision es nula si la mision no esta completada --
 
-CREATE OR REPLACE TRIGGER PERSONAJE_PROGRESA_MISION_CON_NIVEL_ADECUADO
+CREATE OR REPLACE TRIGGER FECHA_COMPLETADA_DE_MISION_ES_NULA_SI_EL_ESTADO_NO_ES_COMPLETADO
 BEFORE INSERT OR UPDATE
   ON Usuario_Progresa_Mision 
 FOR EACH ROW
